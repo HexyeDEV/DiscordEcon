@@ -1,10 +1,8 @@
-import uuid
 import sqlite3
 
 class User:
-    def __init__(self):
-        self.uuid = uuid.uuid4()
-        self.discord_id = uuid.uuid4()
+    def __init__(self, discord_id):
+        self.discord_id = discord_id
         self.balance = 100
         self.job = "0"
         self.moltiplicator = 1
@@ -13,11 +11,11 @@ class User:
         self.inventory = []
         self.db = sqlite3.connect("DiscordEcon.db")
         self.cursor = self.db.cursor()
-        self.cursor.execute("INSERT INTO users (uuid, discord_id, balance, job, moltiplicator, boosters, level, inventory) VALUES (?, ?, ?, ?, ?, ?, ?)", (self.uuid, self.discord_id, self.balance, self.job, self.moltiplicator, ' '.join(self.boosters), ' '.join(self.inventory)))
+        self.cursor.execute("INSERT INTO users (discord_id, balance, job, moltiplicator, boosters, level, inventory) VALUES (?, ?, ?, ?, ?, ?, ?)", (self.uuid, self.discord_id, self.balance, self.job, self.moltiplicator, ' '.join(self.boosters), ' '.join(self.inventory)))
         self.db.commit()
     
     def update_data(self):
-        self.cursor.execute("UPDATE users SET job=?, balance=?, moltiplicator=?, boosters=?, level=? WHERE uuid=?", (self.job, self.balance, self.moltiplicator, ' '.join(self.boosters), self.level, self.uuid))
+        self.cursor.execute("UPDATE users SET job=?, balance=?, moltiplicator=?, boosters=?, level=? WHERE discord_id=?", (self.job, self.balance, self.moltiplicator, ' '.join(self.boosters), self.level, self.discord_id))
         
     def set_job(self, job):
         self.job = job
