@@ -1,5 +1,4 @@
 import sqlite3
-
 class User:
     def __init__(self, discord_id):
         self.discord_id = discord_id
@@ -28,6 +27,7 @@ class User:
 
     def update_data(self):
         self.cursor.execute("UPDATE users SET job=?, balance=?, moltiplicator=?, boosters=?, level=? WHERE discord_id=?", (self.job, self.balance, self.moltiplicator, ' '.join(self.boosters), self.level, self.discord_id))
+        self.db.commit()
         
     def set_job(self, job):
         self.job = job
