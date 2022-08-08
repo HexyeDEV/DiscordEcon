@@ -1,13 +1,14 @@
 import sqlite3
+import pickle
 class User:
     def __init__(self, discord_id):
         self.discord_id = discord_id
         self.balance = 100
         self.job = "0"
         self.moltiplicator = 1
-        self.boosters = []
+        self.boosters = pickle.dumps([])
         self.level = 1
-        self.inventory = []
+        self.inventory = pickle.dumps([])
         self.db = sqlite3.connect("DiscordEcon.db")
         self.cursor = self.db.cursor()
         self.load_data()
@@ -18,11 +19,11 @@ class User:
             self.balance = r[1]
             self.job = r[2]
             self.moltiplicator = r[3]
-            self.boosters = list(r[4])
+            self.boosters = pickle.load(r[4])
             self.level = r[5]
-            self.inventory = list(r[6])
+            self.inventory = pickle.load(r[6])
         else:
-            self.cursor.execute("INSERT INTO users (discord_id, balance, job, moltiplicator, boosters, level, inventory) VALUES (?, ?, ?, ?, ?, ?, ?)", (self.uuid, self.discord_id, self.balance, self.job, self.moltiplicator, ' '.join(self.boosters), ' '.join(self.inventory)))
+            self.cursor.execute("INSERT INTO users (discord_id, balance, job, moltiplicator, boosters, level, inventory) VALUES (?, ?, ?, ?, ?, ?, ?)", (self.discord_id, self.balance, self.job, self.moltiplicator, ' '.join(self.boosters), ' '.join(self.inventory)))
             self.db.commit()
 
     def update_data(self):
