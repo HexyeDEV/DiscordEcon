@@ -11,9 +11,21 @@ class User:
         self.inventory = []
         self.db = sqlite3.connect("DiscordEcon.db")
         self.cursor = self.db.cursor()
-        self.cursor.execute("INSERT INTO users (discord_id, balance, job, moltiplicator, boosters, level, inventory) VALUES (?, ?, ?, ?, ?, ?, ?)", (self.uuid, self.discord_id, self.balance, self.job, self.moltiplicator, ' '.join(self.boosters), ' '.join(self.inventory)))
-        self.db.commit()
+        self.load_data()
     
+    def load_data(self):
+        r = self.cursor.execute("SELECT * FROM users WHERE discord_id = ?", (self.discord_id,)).fetchone()
+        if r != None:
+            self.balance = r[1]
+            self.job = r[2]
+            self.moltiplicator = r[3]
+            self.boosters = list(r[4])
+            self.level = r[5]
+            self.inventory = list(r[6])
+        else:
+            self.cursor.execute("INSERT INTO users (discord_id, balance, job, moltiplicator, boosters, level, inventory) VALUES (?, ?, ?, ?, ?, ?, ?)", (self.uuid, self.discord_id, self.balance, self.job, self.moltiplicator, ' '.join(self.boosters), ' '.join(self.inventory)))
+            self.db.commit()
+
     def update_data(self):
         self.cursor.execute("UPDATE users SET job=?, balance=?, moltiplicator=?, boosters=?, level=? WHERE discord_id=?", (self.job, self.balance, self.moltiplicator, ' '.join(self.boosters), self.level, self.discord_id))
         
