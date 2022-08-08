@@ -23,11 +23,11 @@ class User:
             self.level = r[5]
             self.inventory = pickle.load(r[6])
         else:
-            self.cursor.execute("INSERT INTO users (discord_id, balance, job, moltiplicator, boosters, level, inventory) VALUES (?, ?, ?, ?, ?, ?, ?)", (self.discord_id, self.balance, self.job, self.moltiplicator, ' '.join(self.boosters), ' '.join(self.inventory)))
+            self.cursor.execute("INSERT INTO users (discord_id, balance, job, moltiplicator, boosters, level, inventory) VALUES (?, ?, ?, ?, ?, ?, ?)", (self.discord_id, self.balance, self.job, self.moltiplicator, self.boosters, self.inventory))
             self.db.commit()
 
     def update_data(self):
-        self.cursor.execute("UPDATE users SET job=?, balance=?, moltiplicator=?, boosters=?, level=? WHERE discord_id=?", (self.job, self.balance, self.moltiplicator, ' '.join(self.boosters), self.level, self.discord_id))
+        self.cursor.execute("UPDATE users SET job=?, balance=?, moltiplicator=?, inventory=?, boosters=?, level=? WHERE discord_id=?", (self.job, self.balance, self.moltiplicator, self.inventory, self.boosters, self.level, self.discord_id))
         self.db.commit()
         
     def set_job(self, job):
