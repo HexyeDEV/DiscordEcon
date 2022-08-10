@@ -30,9 +30,12 @@ class Job:
 
     def add_user(self):
         self.users_count += 1
+        self.update_data()
     
     def rewarded(self):
         self.total_gained += self.reward
+        self.update_data()
     
     def opened_status(self, status: bool):
         self.opened = status
+        self.update_data()
