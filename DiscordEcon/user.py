@@ -57,6 +57,12 @@ class User:
     
     def change_level(self, levels):
         self.level += levels
+        self.update_data()
     
     def set_level(self, level):
         self.level = level
+        self.update_data()
+    
+    def add_item(self, item):
+        self.inventory.append(item)
+        self.update_data()
