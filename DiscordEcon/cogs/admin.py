@@ -33,6 +33,7 @@ class admin(commands.Cog):
     @is_owner()
     async def create_job(self, ctx: commands.Context, name: str, reward: int, timeout: int):
         Job(name, reward, timeout)
+        
         await ctx.send(f"A new job was created with the name: {name}")
     
     @commands.command(name="toggle_job", description="Open or Close a job")

@@ -20,6 +20,7 @@ class Item:
             self.cost = r[3]
             self.bought = r[4]
             self.buyable = r[5]
+            
         else:
             self.cursor.execute("INSERT INTO items (type, name, description, cost, bought, buyable) VALUES (?, ?, ?, ?, ?, ?)", (self.type, self.name, self.description, self.cost, self.bought, self.buyable))
             self.db.commit()
